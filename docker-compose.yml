@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-lumio}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env, veja .env.example}
+      POSTGRES_DB: ${POSTGRES_DB:-lumio_development}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - lumio_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-lumio}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgweb:
+    image: sosedoff/pgweb
+    profiles: ["pgweb"]
+    environment:
+      PGWEB_DATABASE_URL: postgres://${POSTGRES_USER:-lumio}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-lumio_development}?sslmode=disable
+    ports:
+      - "127.0.0.1:${PGWEB_PORT:-8081}:8081"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  lumio_postgres_data:
