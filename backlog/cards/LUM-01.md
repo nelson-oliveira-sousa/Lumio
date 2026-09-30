@@ -5,7 +5,7 @@ tipo: Produto
 epico: "Fundação"
 fase: "Fase 1 · Fundação"
 etapa: "Fase 1 · Fundação"
-status: Em revisão
+status: Concluído
 depende_de: []
 ---
 
