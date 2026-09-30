@@ -1,0 +1,31 @@
+{
+  "lumio-protecao-arquivos": {
+    "PreToolUse": [
+      {
+        "matcher": "view_file|write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [{ "type": "command", "command": "ruby ./.agents/hooks/protecao.rb", "timeout": 10 }]
+      }
+    ]
+  },
+  "lumio-comandos": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [{ "type": "command", "command": "ruby ./.agents/hooks/comandos.rb", "timeout": 10 }]
+      }
+    ]
+  },
+  "lumio-formatacao": {
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [{ "type": "command", "command": "ruby ./.agents/hooks/formatacao.rb", "timeout": 60 }]
+      }
+    ]
+  },
+  "lumio-lint-pendente": {
+    "PreInvocation": [
+      { "type": "command", "command": "ruby ./.agents/hooks/lint-pendente.rb", "timeout": 10 }
+    ]
+  }
+}
